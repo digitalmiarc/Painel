@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel do Café - DIGITAL MI</title>
+<style>
+  html,body{margin:0;height:100%;background:#0e1318;overflow:hidden;font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#f2f4f6}
+  body.limpo{cursor:none}
+  #tela{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0}
+  .abs{position:absolute}
+  .card{position:absolute;background:#161d24;border-radius:20px}
+  .lab{color:#a9b4bf;font-weight:700;font-size:22px;letter-spacing:.5px}
+  .sub{color:#a9b4bf;font-size:20px}
+  .linha{position:absolute;left:36px;right:36px;height:1px;background:#232c35}
+  .row{position:absolute;left:36px;right:36px;height:56px;display:flex;align-items:center;font-size:32px}
+  .row .n{flex:1}
+  .row .p{width:260px;text-align:right;font-weight:700;font-size:38px}
+  .row .v{width:200px;text-align:right;font-size:26px;color:#a9b4bf}
+  .up{color:#4ade80!important}.down{color:#f87171!important}
+  .dia{position:absolute;top:510px;width:212px;height:138px;background:#161d24;border-radius:16px}
+  .dia .d{position:absolute;top:8px;width:100%;text-align:center;font-weight:700;font-size:22px}
+  .dia svg{position:absolute;left:12px;top:46px;width:64px;height:64px}
+  .dia .t1{position:absolute;left:84px;right:10px;top:44px;font-size:15px;color:#a9b4bf;white-space:nowrap;overflow:hidden}
+  .dia .t2{position:absolute;left:84px;top:64px;font-size:26px;font-weight:700}
+  .dia .t3{position:absolute;left:84px;top:104px;font-size:17px;font-weight:700;color:#60a5fa}
+  .cid{position:absolute;width:437px;height:130px;background:#161d24;border-radius:16px;font-size:18px}
+  .cid .c{position:absolute;left:22px;top:8px;color:#f08a3c;font-weight:700;font-size:22px}
+  .cid .it{position:absolute;left:22px;right:22px;display:flex}
+  .cid .it span:first-child{flex:1;color:#cdd2d7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px}
+  .cid .it span:last-child{font-weight:700}
+  #barra{left:56px;top:980px;width:1512px;height:72px;background:#f08a3c;border-radius:16px;color:#14100c}
+  #selo{left:24px;top:14px;width:150px;height:44px;background:#14100c;border-radius:8px;color:#f08a3c;font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+  #nhora{left:196px;top:16px;font-weight:700;font-size:26px}
+  #ntexto{left:284px;top:14px;width:1120px;font-weight:700;font-size:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #npos{right:20px;top:20px;font-weight:700;font-size:20px}
+  #sup{left:1584px;top:980px;width:280px;height:72px;background:#161d24;border-radius:16px}
+  #sup img{position:absolute;left:4px;top:0;width:72px;height:72px;image-rendering:pixelated}
+  #sup .a{position:absolute;left:90px;top:8px;font-size:14px;color:#a9b4bf}
+  #sup .b{position:absolute;left:90px;top:26px;font-size:19px;font-weight:700}
+  #sup .c{position:absolute;left:90px;top:51px;font-size:12px;font-weight:700;color:#f08a3c}
+  /* telas de configuração e bloqueio */
+  .cobre{position:absolute;inset:0;background:rgba(10,13,17,.96);display:none;align-items:center;justify-content:center}
+  .caixa{width:900px;background:#11141a;border:4px solid #f08a3c;border-radius:24px;padding:40px 50px;text-align:center}
+  .caixa h1{margin:0 0 20px;color:#f08a3c;font-size:40px}
+  .caixa p{font-size:28px;color:#ebebeb;margin:12px 0}
+  .caixa input{width:100%;box-sizing:border-box;font-size:40px;padding:14px 18px;border-radius:12px;border:2px solid #3a4652;background:#0e1318;color:#fff;text-align:center;margin:14px 0}
+  .caixa input:focus{border-color:#f08a3c;outline:none}
+  .caixa button{font-size:32px;padding:14px 40px;border-radius:12px;border:0;background:#f08a3c;color:#14100c;font-weight:700;margin:10px}
+  .caixa button:focus{outline:4px solid #fff}
+  .codigo{font-family:Consolas,"Courier New",monospace;font-size:84px;font-weight:700;letter-spacing:4px;margin:10px 0}
+  .verde{color:#50c878!important;font-weight:600}
+  .peq{font-size:22px!important;color:#a0a5af!important}
+</style>
+</head>
+<body>
+<div id="tela">
+  <div class="abs" style="left:56px;top:40px;color:#f08a3c;font-weight:700;font-size:22px">COTAÇÕES DO CAFÉ</div>
+  <div class="abs" style="left:56px;top:62px;font-weight:700;font-size:48px">Mercado de hoje</div>
+  <div class="abs" id="hora" style="right:56px;top:22px;font-weight:700;font-size:56px">--:--</div>
+  <div class="abs sub" id="data" style="right:56px;top:108px;font-size:22px"></div>
+  <div class="abs" style="left:56px;top:156px;width:1808px;height:2px;background:#232c35"></div>
+
+  <div class="card" style="left:56px;top:168px;width:890px;height:292px">
+    <div class="abs lab" style="left:36px;top:16px">MERCADO</div>
+    <div class="abs sub" style="right:36px;top:20px">a cada 30 s</div>
+    <div id="mercado"></div>
+  </div>
+  <div class="card" style="left:974px;top:168px;width:890px;height:292px">
+    <div class="abs lab" style="left:36px;top:16px">BOLSAS DO CAFÉ</div>
+    <div class="abs sub" style="right:36px;top:20px">Agnocafé · a cada 1 min</div>
+    <div id="bolsas"></div>
+  </div>
+
+  <div class="abs lab" id="climaT" style="left:56px;top:476px">CLIMA</div>
+  <div id="clima"></div>
+
+  <div class="abs lab" style="left:56px;top:662px">COTAÇÕES POR CIDADES</div>
+  <div id="cidades"></div>
+
+  <div class="abs" id="barra">
+    <div class="abs" id="selo">NOTÍCIAS</div>
+    <div class="abs" id="nhora"></div>
+    <div class="abs" id="ntexto">Carregando notícias...</div>
+    <div class="abs" id="npos"></div>
+  </div>
+  <div class="abs" id="sup">
+    <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAIAAADajyQQAAACnElEQVR4Xu2a3W6DUAyDx9T3f+VO05FohPGH4WpK5kt6yk+MHee02/v9/uqI744P9Yu2D/baGdu2LWRP39763fXpOlJX8pH6qTtbgv2KAxhbYC9RVplnrn3ldkFZrbh1b2MYq5XjajFXlf+10rGhvDH0uqdMDmMsh3NIx4Pjmc/zAP+MGahyau25p6kPJ7oNMYwx7hjOLV220B7FiYSvHt7bGMaeveWa9JzSkoTh1ty6t7aMbeErq9AcqJXmNZpOnHofYABjbiJSOE/Lz6Bc6TmZz0tuBzD2DDxBsVsyw3c5PJhFW8Y+ex7O9zSnOyNVD+RZyyXJCt5Ngc7WlrFjH+MKuVo6j2KN6dncu3D3up33FT+MOX/jmTfnhDXMulpwux2n+WaYxpKdDLcmR+KZlavkivN2gl2FuLoLPBc7FSmSa7lv7WirsXvJw+W3iiT7J2De3KQ3iTHeY3KdpKpL9+i183BXdDpM8urh/gdoLKkKr8n7knovpwqXYAFtGaOsmCT9RJnqmW52zqfmy1muLWPHPubedZct2Mcc8n1i56LueP8+dtSY9qX8SMKqIvdSds6pu1Sufs7HOHmod+XnSfoqzO9jXJHB9VaNqWdy/+H+xg45VWPOtbhfJfkj2bFwSJR5wDCNqSO5idX5kqa+W13oFO4eFqbOYxWa6JzSEm1oXZOMz8qExDhAY/D0B6wq8i5iPVsy1/H+l7rupXu3Zez61xZOD1y5pNJ33ZInxh1tGTvfCQ6rsitNFZUo0Gk19164yjDGcnAicfqsPU07J78vSS7t/Bs0/dqSIN+xcP6pDLi5eyGZrOcxpgmN681aqopSJ3Scu6QaJqQxrhjW4/RfF1UDDkluVIad9+rKHW0Ze/6f4D+Otoy1fbAfwH/ireQaOwcAAAAASUVORK5CYII=">
+    <div class="a">Suporte · Contrate-nos</div>
+    <div class="b">(34) 99948-8133</div>
+    <div class="c">DIGITAL MI</div>
+  </div>
+
+  <div class="cobre" id="cfg">
+    <div class="caixa">
+      <h1>PAINEL DO CAFÉ · DIGITAL MI</h1>
+      <p id="cfgMsg">Digite o CEP do local onde o painel vai ficar (para o clima):</p>
+      <input id="cfgCep" inputmode="numeric" maxlength="9" placeholder="00000-000">
+      <input id="cfgNome" placeholder="Nome da empresa" style="display:none">
+      <div><button id="cfgOk">CONTINUAR</button></div>
+      <p class="peq" id="cfgErro"></p>
+    </div>
+  </div>
+  <div class="cobre" id="trava">
+    <div class="caixa">
+      <h1>PAINEL DO CAFÉ · DIGITAL MI</h1>
+      <p id="travaMsg">Este aparelho ainda não está liberado.</p>
+      <p class="peq">Código deste aparelho:</p>
+      <div class="codigo" id="travaCod">----</div>
+      <p class="verde">Envie este código pelo WhatsApp<br>(34) 99948-8133 para liberar o painel.</p>
+    </div>
+  </div>
+</div>
+<script>
+// Leitura dos dados do Agnocafé e do Yahoo (mesmas fontes do painel do Windows)
+var DMParse = (function () {
+  function limpa(t) { return (t || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function tabela(html, titulo) {
+    var i = html.indexOf(titulo);
+    if (i < 0) return [];
+    var fim = html.indexOf('</table>', i);
+    var bloco = html.slice(i, fim < 0 ? i + 4000 : fim);
+    var linhas = [], re = /<tr[^>]*>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>\s*<td[^>]*>([\s\S]*?)<\/td>/g, m;
+    while ((m = re.exec(bloco))) linhas.push({ nome: limpa(m[1]), preco: limpa(m[2]), variacao: limpa(m[3]) });
+    return linhas;
+  }
+  function agnocafe(html) {
+    var r = { ny: null, londres: null, bmf: null, dolar: null, cidades: [], noticias: [] };
+    r.ny = tabela(html, 'Bolsa de NY</strong>')[0] || null;
+    r.londres = tabela(html, 'Bolsa de Londres</strong>')[0] || null;
+    r.bmf = tabela(html, 'Bolsa da BM&F</strong>')[0] || null;
+    var moeda = tabela(html, '# Moeda #</strong>');
+    r.dolar = moeda.filter(function (x) { return /d[óo]lar/i.test(x.nome); })[0] || null;
+    var t = html.indexOf('id="tickerbolsas"');
+    if (t >= 0) {
+      var ul = html.slice(t, html.indexOf('</ul>', t));
+      ul.split(/<li>/).slice(1).forEach(function (li) {
+        var nome = (li.match(/color=#e76508>([\s\S]*?)<\/font>/i) || [])[1];
+        if (!nome) return;
+        var depois = li.split(/Valor<\/td>/i)[1] || '';
+        var itens = [], re = /<tr[^>]*>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<\/tr>/g, m;
+        while ((m = re.exec(depois)) && itens.length < 4) itens.push({ nome: limpa(m[1]), valor: limpa(m[2]) });
+        if (itens.length) r.cidades.push({ cidade: limpa(nome), itens: itens });
+      });
+    }
+    var n = html.indexOf('conteudo_mercado_online');
+    if (n >= 0) {
+      var bloco = html.slice(n, html.indexOf('</div>', n));
+      var re2 = /<label>([0-9:]{5})<\/label>\s*-\s*([\s\S]*?)<br/g, m2;
+      while ((m2 = re2.exec(bloco)) && r.noticias.length < 8)
+        r.noticias.push({ hora: m2[1], texto: limpa(m2[2]).replace(/^#\s*/, '') });
+    }
+    return r;
+  }
+  function yahoo(json) {
+    var d = typeof json === 'string' ? JSON.parse(json) : json;
+    var meta = d.chart.result[0].meta;
+    var p = meta.regularMarketPrice, a = meta.chartPreviousClose || meta.previousClose;
+    return { preco: p, anterior: a, variacao: a ? (p - a) / a * 100 : 0 };
+  }
+  return { agnocafe: agnocafe, yahoo: yahoo };
+})();
+if (typeof module !== 'undefined') module.exports = DMParse;
+
+</script>
+<script>
+(function () {
+  'use strict';
+  // ==== CONFIGURAÇÃO ====
+  var SERVIDOR = 'https://painel-cafe.SEU-USUARIO.workers.dev';            // endereço do servidor na Cloudflare
+  var DEMO = /[?&]demo=1/.test(location.search);
+  var SALT = 'DigitalMI-PainelCafe-2026', ALFA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var DIAS_SEM_INTERNET = 7;
+
+  // ---- armazenamento (o navegador da TV guarda; se falhar, fica só na memória) ----
+  var mem = {};
+  function ler(k) { try { var v = localStorage.getItem('dm_' + k); return v === null ? mem[k] : v; } catch (e) { return mem[k]; } }
+  function grava(k, v) { mem[k] = v; try { localStorage.setItem('dm_' + k, v); } catch (e) {} }
+
+  // ---- escala para qualquer tamanho de tela ----
+  function escala() {
+    var s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    var t = document.getElementById('tela');
+    t.style.transform = 'translate(' + (innerWidth - 1920 * s) / 2 + 'px,' + (innerHeight - 1080 * s) / 2 + 'px) scale(' + s + ')';
+  }
+  addEventListener('resize', escala); escala();
+
+  function $(id) { return document.getElementById(id); }
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(v, d) { return v == null || isNaN(v) ? '--' : Number(v).toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+
+  // ---- código do aparelho (mesmo cálculo do painel do Windows) ----
+  function hash(s, seed, mul) { var x = seed; for (var i = 0; i < s.length; i++) x = (x * mul + s.charCodeAt(i)) % 4294967291; return x; }
+  function enc(n) { var o = ''; for (var i = 0; i < 4; i++) { o += ALFA.charAt(n % 32); n = Math.floor(n / 32); } return o; }
+  function idAparelho() {
+    if (window.DMApp && DMApp.idAparelho) return String(DMApp.idAparelho());
+    var id = ler('id');
+    if (!id) { id = 'W' + Date.now().toString(36) + Math.random().toString(36).slice(2, 12); grava('id', id); }
+    return id;
+  }
+  function codigo() { var g = idAparelho().toUpperCase() + SALT; return enc(hash(g, 7, 131)) + '-' + enc(hash(g, 13, 257)); }
+  function tipoAparelho() {
+    if (window.DMApp) return 'Aplicativo Android';
+    var u = navigator.userAgent;
+    return /Tizen/i.test(u) ? 'Samsung (navegador)' : /Web0S|webOS/i.test(u) ? 'LG (navegador)' : /Android/i.test(u) ? 'Android (navegador)' : 'Navegador';
+  }
+
+  // ---- rede ----
+  function pega(url, tipo) {
+    return fetch(url, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(r.status); return tipo === 'json' ? r.json() : r.text(); });
+  }
+  function dados(f) { return pega(SERVIDOR + '/dados?f=' + f, 'text'); }
+
+  // ---- relógio ----
+  var DIAS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+  var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  function relogio() {
+    var d = new Date();
+    $('hora').textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    $('data').textContent = DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()] + ' de ' + d.getFullYear();
+  }
+
+  // ---- linhas dos cartões ----
+  function linhas(el, itens) {
+    var h = '';
+    itens.forEach(function (it, i) {
+      var y = 52 + i * 56;
+      h += '<div class="linha" style="top:' + y + 'px"></div><div class="row" style="top:' + (y + 2) + 'px"><span class="n">' + esc(it.n) +
+        '</span><span class="p">' + esc(it.p) + '</span><span class="v ' + (it.cls || '') + '">' + esc(it.v) + '</span></div>';
+    });
+    el.innerHTML = h;
+  }
+  function seta(v) { return v > 0 ? ['▲ ', 'up'] : v < 0 ? ['▼ ', 'down'] : ['• ', '']; }
+
+  var Y = [['cafe', 'Café Contrato C', 2, ''], ['dxy', 'Índice Dólar', 3, ''], ['ibov', 'Ibovespa', 0, ''], ['dolar', 'Dólar/BRL', 4, 'R$ ']];
+  var mercado = {};
+  function atualizaMercado() {
+    Y.forEach(function (y) {
+      (DEMO ? Promise.resolve(DEMO_Y[y[0]]) : dados(y[0]).then(DMParse.yahoo)).then(function (r) { mercado[y[0]] = r; desenhaMercado(); }).catch(function () {});
+    });
+  }
+  function desenhaMercado() {
+    linhas($('mercado'), Y.map(function (y) {
+      var r = mercado[y[0]]; if (!r) return { n: y[1], p: '--', v: '' };
+      var s = seta(r.variacao);
+      return { n: y[1], p: y[3] + num(r.preco, y[2]), v: s[0] + num(Math.abs(r.variacao), 2) + '%', cls: s[1] };
+    }));
+  }
+
+  var MES3 = function (t) { return (t || '').slice(0, 3); };
+  function varTxt(t) { t = (t || '').trim(); var neg = /^-/.test(t), pos = /^\+/.test(t); var v = t.replace(/^[-+]\s*/, ''); return { v: (neg ? '▼ ' : pos ? '▲ ' : '• ') + v, cls: neg ? 'down' : pos ? 'up' : '' }; }
+  var noticias = [], nIdx = 0;
+  function atualizaAgno() {
+    (DEMO ? Promise.resolve(DEMO_AGNO) : dados('agno').then(DMParse.agnocafe)).then(function (a) {
+      var b = [['NY', a.ny, true], ['Londres', a.londres, true], ['BM&F', a.bmf, true], ['Dólar', a.dolar, false]];
+      linhas($('bolsas'), b.map(function (x) {
+        if (!x[1]) return { n: x[0], p: '--', v: '' };
+        var t = varTxt(x[1].variacao);
+        return { n: x[0] + (x[2] ? ' ' + MES3(x[1].nome) : ''), p: x[1].preco, v: t.v, cls: t.cls };
+      }));
+      var h = '';
+      a.cidades.slice(0, 8).forEach(function (c, i) {
+        var x = 56 + (i % 4) * 457, y = 694 + Math.floor(i / 4) * 142;
+        h += '<div class="cid" style="left:' + x + 'px;top:' + y + 'px"><div class="c">' + esc(c.cidade) + '</div>';
+        c.itens.slice(0, 4).forEach(function (it, j) { h += '<div class="it" style="top:' + (38 + j * 22) + 'px"><span>' + esc(it.nome) + '</span><span>' + esc(it.valor) + '</span></div>'; });
+        h += '</div>';
+      });
+      $('cidades').innerHTML = h;
+      if (a.noticias.length) { noticias = a.noticias; mostraNoticia(); }
+    }).catch(function () {});
+  }
+  function mostraNoticia() {
+    if (!noticias.length) return;
+    nIdx = nIdx % noticias.length;
+    $('nhora').textContent = noticias[nIdx].hora; $('ntexto').textContent = noticias[nIdx].texto;
+    $('npos').textContent = (nIdx + 1) + '/' + noticias.length;
+  }
+
+  // ---- clima (Open-Meteo, direto) ----
+  var COD = { 0: 'Céu limpo', 1: 'Poucas nuvens', 2: 'Parc. nublado', 3: 'Nublado', 45: 'Neblina', 48: 'Neblina', 51: 'Garoa', 53: 'Garoa', 55: 'Garoa', 61: 'Chuva fraca', 63: 'Chuva', 65: 'Chuva forte', 80: 'Pancadas fracas', 81: 'Pancadas', 82: 'Pancadas fortes', 95: 'Trovoada', 96: 'Trovoada c/ granizo', 99: 'Trovoada c/ granizo' };
+  function icone(c) {
+    var nuvem = '<ellipse cx="34" cy="38" rx="22" ry="12" fill="#94a3b8"/><circle cx="26" cy="32" r="10" fill="#94a3b8"/><circle cx="40" cy="28" r="12" fill="#94a3b8"/>';
+    var gotas = '<line x1="24" y1="54" x2="20" y2="62" stroke="#60a5fa" stroke-width="3"/><line x1="34" y1="54" x2="30" y2="62" stroke="#60a5fa" stroke-width="3"/><line x1="44" y1="54" x2="40" y2="62" stroke="#60a5fa" stroke-width="3"/>';
+    if (c === 0 || c === 1) return '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="13" fill="#facc15"/>' + [0, 45, 90, 135, 180, 225, 270, 315].map(function (a) { var r = a * Math.PI / 180; return '<line x1="' + (32 + 18 * Math.cos(r)) + '" y1="' + (32 + 18 * Math.sin(r)) + '" x2="' + (32 + 25 * Math.cos(r)) + '" y2="' + (32 + 25 * Math.sin(r)) + '" stroke="#facc15" stroke-width="3"/>'; }).join('') + '</svg>';
+    if (c === 2) return '<svg viewBox="0 0 64 64"><circle cx="22" cy="22" r="10" fill="#facc15"/>' + nuvem + '</svg>';
+    if (c >= 95) return '<svg viewBox="0 0 64 64">' + nuvem.replace(/#94a3b8/g, '#64748b') + '<polygon points="34,44 26,58 33,58 29,66 42,50 35,50 39,44" fill="#facc15"/>' + gotas + '</svg>';
+    if (c >= 51) return '<svg viewBox="0 0 64 64">' + nuvem + gotas + '</svg>';
+    return '<svg viewBox="0 0 64 64">' + nuvem + '</svg>';
+  }
+  function atualizaClima() {
+    var lat = ler('lat'), lon = ler('lon'), cid = ler('cidade');
+    if (!lat) { lat = '-19.6967'; lon = '-46.1717'; cid = 'Campos Altos'; }
+    var u = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,relative_humidity_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FSao_Paulo&forecast_days=8';
+    (DEMO ? Promise.resolve(DEMO_CLIMA) : pega(u, 'json')).then(function (w) {
+      var c = w.current;
+      $('climaT').textContent = 'CLIMA EM ' + cid.toUpperCase() + '  ·  agora ' + Math.round(c.temperature_2m) + '°C, ' + (COD[c.weather_code] || '') + ', umidade ' + c.relative_humidity_2m + '%';
+      var h = '', sem = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      for (var i = 0; i < 8; i++) {
+        var dt = new Date(w.daily.time[i] + 'T12:00:00'), cod = w.daily.weather_code[i];
+        h += '<div class="dia" style="left:' + (56 + i * 228) + 'px"><div class="d"' + (i === 0 ? ' style="color:#f08a3c"' : '') + '>' + (i === 0 ? 'Hoje' : sem[dt.getDay()] + ' ' + dt.getDate()) + '</div>' + icone(cod) +
+          '<div class="t1">' + (COD[cod] || '') + '</div><div class="t2">' + Math.round(w.daily.temperature_2m_max[i]) + '° / ' + Math.round(w.daily.temperature_2m_min[i]) + '°</div><div class="t3">Chuva ' + (w.daily.precipitation_probability_max[i] || 0) + '%</div></div>';
+      }
+      $('clima').innerHTML = h;
+    }).catch(function () {});
+  }
+
+  // ---- licença (trava) ----
+  var liberado = null, timerLic = null;
+  function mostraTrava(msg) { document.body.className = ''; $('travaMsg').textContent = msg; $('travaCod').textContent = codigo(); $('trava').style.display = 'flex'; liberado = false; agenda(60); }
+  function libera() { document.body.className = 'limpo'; $('trava').style.display = 'none'; grava('lic', codigo() + '|' + Date.now()); if (!liberado) { liberado = true; tudo(); } agenda(6 * 3600); }
+  function agenda(seg) { clearTimeout(timerLic); timerLic = setTimeout(confere, seg * 1000); }
+  function confere() {
+    if (DEMO) { libera(); return; }
+    pega(SERVIDOR + '/licenca?c=' + codigo(), 'json').then(function (r) {
+      if (r.status === 'SIM') libera();
+      else mostraTrava(r.status === 'NAO' ? 'Este painel foi bloqueado.' : 'Este aparelho ainda não está liberado.');
+    }).catch(function () {
+      var l = (ler('lic') || '').split('|');
+      if (l[0] === codigo() && Date.now() - Number(l[1]) < DIAS_SEM_INTERNET * 864e5) libera();
+      else mostraTrava('Sem internet para validar a licença. Verifique a conexão.');
+    });
+  }
+
+  // ---- primeira configuração: CEP e nome ----
+  function configura(feito) {
+    var etapa = 'cep', local = null;
+    $('cfg').style.display = 'flex'; $('cfgCep').focus();
+    function erro(t) { $('cfgErro').textContent = t; }
+    function ok() {
+      if (etapa === 'cep') {
+        var cep = $('cfgCep').value.replace(/\D/g, '');
+        if (cep.length !== 8) return erro('O CEP precisa ter 8 números.');
+        erro('Buscando a cidade...');
+        pega('https://viacep.com.br/ws/' + cep + '/json/', 'json').then(function (e) {
+          if (e.erro) throw new Error('CEP não encontrado');
+          return pega('https://geocoding-api.open-meteo.com/v1/search?count=20&language=pt&countryCode=BR&name=' + encodeURIComponent(e.localidade), 'json').then(function (g) {
+            var res = (g.results || []).filter(function (r) { return (r.admin1 || '').indexOf(UFS[e.uf] || '#') === 0; })[0] || (g.results || [])[0];
+            if (!res) throw new Error('Cidade sem localização');
+            local = { cidade: e.localidade, uf: e.uf, lat: String(res.latitude), lon: String(res.longitude) };
+            etapa = 'nome'; erro('');
+            $('cfgMsg').textContent = 'Cidade: ' + e.localidade + ' - ' + e.uf + '. Agora digite o nome da empresa:';
+            $('cfgCep').style.display = 'none'; $('cfgNome').style.display = ''; $('cfgNome').focus();
+          });
+        }).catch(function (x) { erro((x && x.message === 'CEP não encontrado') ? 'CEP não encontrado. Confira e tente de novo.' : 'Não foi possível buscar a cidade. Verifique a internet.'); });
+      } else {
+        var nome = $('cfgNome').value.trim() || '(sem nome)';
+        grava('cidade', local.cidade); grava('uf', local.uf); grava('lat', local.lat); grava('lon', local.lon); grava('cliente', nome);
+        $('cfg').style.display = 'none';
+        fetch(SERVIDOR + '/aviso', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cliente: nome, cidade: local.cidade + ' - ' + local.uf, codigo: codigo(), aparelho: tipoAparelho() }) }).catch(function () {});
+        feito();
+      }
+    }
+    $('cfgOk').onclick = ok;
+    ['cfgCep', 'cfgNome'].forEach(function (id) { $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.keyCode === 13) ok(); }); });
+  }
+  var UFS = { AC: 'Acre', AL: 'Alagoas', AP: 'Amapá', AM: 'Amazonas', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal', ES: 'Espírito Santo', GO: 'Goiás', MA: 'Maranhão', MT: 'Mato Grosso', MS: 'Mato Grosso do Sul', MG: 'Minas Gerais', PA: 'Pará', PB: 'Paraíba', PR: 'Paraná', PE: 'Pernambuco', PI: 'Piauí', RJ: 'Rio de Janeiro', RN: 'Rio Grande do Norte', RS: 'Rio Grande do Sul', RO: 'Rondônia', RR: 'Roraima', SC: 'Santa Catarina', SP: 'São Paulo', SE: 'Sergipe', TO: 'Tocantins' };
+
+  // ---- ciclo ----
+  var iniciado = false;
+  function tudo() {
+    if (iniciado) return; iniciado = true;
+    atualizaMercado(); atualizaAgno(); atualizaClima();
+    setInterval(atualizaMercado, 30000); setInterval(atualizaAgno, 60000); setInterval(atualizaClima, 1800000);
+    setInterval(function () { nIdx++; mostraNoticia(); }, 8000);
+  }
+  relogio(); setInterval(relogio, 1000);
+  // recarrega a página uma vez por dia (evita travar após muitos dias ligada)
+  setTimeout(function () { location.reload(); }, 24 * 3600 * 1000);
+  setTimeout(function () { if (DEMO || ler('cidade')) confere(); else configura(confere); }, 0);
+
+  // ---- dados de exemplo (?demo=1) ----
+  var DEMO_Y = { cafe: { preco: 286.35, variacao: -0.14 }, dxy: { preco: 102.155, variacao: -0.04 }, ibov: { preco: 171006, variacao: -2.68 }, dolar: { preco: 5.3492, variacao: -0.06 } };
+  var DEMO_AGNO = {"ny":{"nome":"Dezembro","preco":"285,00","variacao":"- 8,75"},"londres":{"nome":"Novembro","preco":"3.240","variacao":"0"},"bmf":{"nome":"Dezembro","preco":"355,55","variacao":"- 6,85"},"dolar":{"nome":"Dólar","preco":"5,3800","variacao":"+ 0,54"},"cidades":[{"cidade":"Varginha","itens":[{"nome":"Duro/riado/rio","valor":"R$ 1500,00"},{"nome":"Certificado 20%","valor":"R$ 1850,00"},{"nome":"Peneira14/15/16","valor":"R$ 1920,00"},{"nome":"Safra 25/26 20%","valor":"R$ 1830,00"}]},{"cidade":"Três Pontas","itens":[{"nome":"Duro/riado/rio","valor":"R$ 1530,00"},{"nome":"Safra 25/26 18%","valor":"R$ 1830,00"},{"nome":"Certificado 15%","valor":"R$ 1860,00"},{"nome":"Miúdo 14/15/16","valor":"R$ 1600,00"}]},{"cidade":"Franca","itens":[{"nome":"Moka","valor":"R$ 1650,00"},{"nome":"Duro/Riado 15%","valor":"R$ 1500,00"},{"nome":"Cereja 20%","valor":"R$ 1880,00"},{"nome":"Safra 25/26 15%","valor":"R$ 1840,00"}]},{"cidade":"Patrocínio","itens":[{"nome":"Rio com 20%","valor":"R$ 1300,00"},{"nome":"Peneira 17/18","valor":"R$ 2000,00"},{"nome":"Safra 25/26 15%","valor":"R$ 1840,00"},{"nome":"Safra 25/26 30%","valor":"R$ 1810,00"}]},{"cidade":"Garça","itens":[{"nome":"Safra 25/26 20%","valor":"R$ 1820,00"},{"nome":"Safra 25/26 30%","valor":"R$ 1800,00"},{"nome":"Escolha kg/apro","valor":"R$ 16,00"},{"nome":"Duro/Riado 15%","valor":"R$ 1500,00"}]},{"cidade":"Guaxupé","itens":[{"nome":"Safra 25/26 15%","valor":"R$ 1840,00"},{"nome":"Safra 25/26 25%","valor":"R$ 1820,00"},{"nome":"600 defeitos","valor":"R$ 1600,00"},{"nome":"Duro/riado 20%","valor":"R$ 1500,00"}]},{"cidade":"Indicadores","itens":[{"nome":"Agnocafé 25/26","valor":"R$ 1840,00"},{"nome":"Cepea Arábica","valor":"R$ 1610,99"},{"nome":"Cepea Conilon","valor":"R$ 967,97"},{"nome":"Conilon/Vietnã","valor":"R$ 1037,00"}]},{"cidade":"Linhares","itens":[{"nome":"Conilon T. 6","valor":"R$ 990,00"},{"nome":"Conilon T. 7","valor":"R$ 980,00"},{"nome":"Conilon T. 7/8","valor":"R$ 960,00"}]}],"noticias":[{"hora":"12:30","texto":"atenção no mercado está focado na performance do dólar"},{"hora":"12:21","texto":"Alta do petróleo e do dólar pode pressionar custos do agronegócio no fim de 2026"},{"hora":"12:16","texto":"Nicarágua inicia oficialmente processo de colheita de café de 2026"},{"hora":"11:50","texto":"depois de operar em queda, dólar e juros futuros voltam a subir antes do Fed"},{"hora":"11:43","texto":"Exportador de grãos e açúcar aproveita alta do dólar e trava vendas"},{"hora":"11:30","texto":"Região de Pursat ajuda Camboja a ampliar oferta de café"},{"hora":"11:14","texto":"Quênia faz levantamento para criar atlas de sabores locais de café"},{"hora":"10:47","texto":"Cumulus Machine: sistema de bancada garante preparo de café individual"}]};
+  var DEMO_CLIMA = { current: { temperature_2m: 24.3, relative_humidity_2m: 62, weather_code: 2 }, daily: { time: ['2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04'], weather_code: [2, 0, 3, 63, 95, 81, 1, 61], temperature_2m_max: [29, 31, 28, 25, 24, 26, 30, 27], temperature_2m_min: [17, 18, 18, 17, 16, 17, 18, 18], precipitation_probability_max: [10, 0, 20, 80, 90, 70, 5, 60] } };
+})();
+</script>
+</body>
+</html>
